@@ -5,8 +5,8 @@ Objective: lemmatize the Book 10 of Quintilian's *Institutio oratoria* (Quint. I
 ## Preparation
 
 + Install CLTK
-+ Install Latin corpora
-+ Install BaseX (in our case, cleaning up Quintilian's text -- even from the plaintext Latin Library version supplied by CLTK -- seemed beyond our Python skills)
++ Install Latin corpora; use [Quintilian's Book 10 from CLTK's Latin Library repository](https://github.com/cltk/latin_text_latin_library/blob/master/quintilian/quintilian.institutio10.txt) (GitHub)
++ Install [BaseX XML DB](http://basex.org/) (because, in our case, quickly cleaning up Quintilian's text -- even from the plaintext version supplied by CLTK -- was beyond my Python skills)
 
 ## Procedure
 
@@ -36,6 +36,8 @@ At the moment, CLTK's lemmatizer does not take into account these outcomes. It s
 This behaviour is [documented](http://docs.cltk.org/en/latest/latin.html):
 
 > For ambiguous forms, which could belong to several headwords, the current lemmatizer chooses the more commonly occurring headword (code here). For any errors that you spot, please open a ticket.
+
+A further problem with this approach is that in some cases we cannot be sure whether the word has been recognized, or is the form simply repeated. For example, *animo / animo*, *accius / accius*. Of course, for some purposes this is completely acceptable ("accius" is lemma of "accius", though CLTK lemmatizer in general does not lemmatize proper names), but it is connected with the larger problem of identifying the source of lemmata (see below).
 
 ## A list of unexpected lemmatizations
 
@@ -117,6 +119,57 @@ Here are the first results -- lemmatizations of Quint. Inst. 10, letters A-C, wh
 
 # Unclear lemma format
 
+A number of lemmata ends with an index number (accido1, adeo1, assiduus2...). Because it is not clearly documented which words / meanings are signified by these indices, they are not very useful: does "adeo" signify "so", or "to approach"? Where can I check?
+
+In general, the *source* of lemmata should somehow be provided. See below.
+
 # Inconsistent lemma format
 
+In lemmatization, the default CLTK lemmatizer provides verbs with prefixes which are inconsistently marked. In some cases prefixes are not separated from the stem (absum, abrumpo, absolvo); sometimes they are separated with a hyphen (see table below; I find even ad-sequor and assequor, as lemmata of adsecutus and assequi, while adsidua is lemmatized as assiduus2); sometimes they are even separated with an underscore and a hyphen (the same table). This *probably* means that the vowel is long. But vowel length is not annotated consistently in the lemmata, and it is not documented.
 
+| Form | Lemma |
+|---|---|
+| adpetent | ad-peto |
+| adprehendas | ad-prehendo |
+| adprehenditur | ad-prehendo |
+| adridens | ad-rideo |
+| adsecutus | ad-sequor |
+| adsignando | ad-signo |
+| adsimulata | ad-simulo |
+| adstrictius | ad-stringo |
+| adstringere | ad-stringo |
+| adsumendus | ad-sumo |
+| adsumere | ad-sumo |
+| adsumimus | ad-sumo |
+| adsumpta | ad-sumo |
+| comprensa | con-prehenso |
+| concupierint | con-cupio |
+| concupisset | con-cupio |
+| conlocandi | con-loco |
+| conlocata | con-loco |
+| conrogatis | con-rogo |
+| consecuta | con-sequor |
+| consecuti | con-sequor |
+| consecutus | con-sequor |
+| derexeris | de_-rego |
+| destiterat | de_-sisto |
+
+# Improbable lemmatizations
+
+A couple of lemmatizations seem to me not only unexpected, but wholly improbable:
+
+| acie | acieris |
+| bene |benus |
+
+
+# Unrecognized forms
+
+I would expect a number of forms to be lemmatized, but seem not to be:
+
+| caelibum | caelibum |
+| codicibus | codicibus |
+| cogitaverant | cogitaverant |
+| commune | commune |
+| coturnos | coturnos |
+
+# Some general observations
