@@ -18,30 +18,30 @@ Objective: lemmatize the Book 10 of Quintilian's *Institutio oratoria* (Quint. I
 
 ## Findings
 
-Everything works. Speed is not a problem. For someone with sufficient Python skills, importing and exporting are trivial. The "Raw" mode offered by the lemmatizer method (`.lemmatize(q, return_raw=True)`) is very useful and easy to postprocess.
+Everything works. Speed is not a problem. For someone with basic Python skills, importing and exporting are trivial. The "Raw" mode offered by the lemmatizer method (`.lemmatize(q, return_raw=True)`) is very useful and easy to postprocess.
 
 ### Issues
 
-+ Unclean sources. The plaintext file prepared from Latin Library's HTML, though the most simple, nevertheless still has HTML entities (lt, gt) and other editorial signs (cruces, square brackets) which have to be removed in the preparatory phase.
-+ A segmenting problem. Reasonable use cases would include, for example, comparing Quintilian's vocabulary in all of the Book 10 with his vocabulary in the first chapter, introduction of new key terms, etc. For this purpose, the plaintext source has to be additionally processed.
++ **Unclean sources**. The plaintext file prepared from Latin Library's HTML, though seemingly the most simple format, promising the quickest processing, nevertheless turned out to have HTML entities (lt, gt) and other editorial symbols (cruces, square brackets) which had to be removed in the preparatory phase.
++ **A problem with passages**. Reasonable use cases would include, for me, comparing Quintilian's vocabulary in all of the Book 10 with his vocabulary in the first chapter, introduction of new key terms, etc. For this purpose, the plaintext source has to be additionally processed, if we want to work with specific chapters, or if we want to know in which chapter a result is found.
 
-+ Accuracy. Some word forms are impossible to lemmatize correctly without supervision or additional calibration. There are four possible outcomes:
++ **Accuracy**. Some word forms are impossible to lemmatize correctly without supervision or additional calibration. There are four possible outcomes:
   + the word form is unknown
   + there are multiple candidates for the lemma
   + there is a single, correct candidate for the lemma
   + there is a single, wrong candidate for the lemma
 
-At the moment, CLTK's lemmatizer does not take into account these outcomes. It simply supplies a lemma (if it finds one), or repeats the word form (if it has not found a lemma). We don't know how reliable the results are, and we don't know how the lemmatizer selected the lemma (in the case of multiple candidates).
+At the moment, CLTK's lemmatizer does not take into account these outcomes, or does not inform users about them. The lemmatizer simply supplies a lemma if it finds one, or repeats the word form (if it has not found anything). We don't know how reliable the results are (is the given lemma the only one possible for the program?), and we don't know how the lemmatizer selected the lemma (in the case of multiple candidates).
 
 This behaviour is [documented](http://docs.cltk.org/en/latest/latin.html):
 
 > For ambiguous forms, which could belong to several headwords, the current lemmatizer chooses the more commonly occurring headword (code here). For any errors that you spot, please open a ticket.
 
-A further problem with this approach is that in some cases we cannot be sure whether the word has been recognized, or is the form simply repeated. For example, *animo / animo*, *accius / accius*. Of course, for some purposes this is completely acceptable ("accius" is lemma of "accius", though CLTK lemmatizer in general does not lemmatize proper names), but it is connected with the larger problem of identifying the source of lemmata (see below).
+A further problem with this approach is that in some cases we cannot be sure whether the word has been recognized, or is the form simply repeated. For example, *animo / animo*, *accius / accius*. Of course, for some purposes this is completely acceptable ("accius" is lemma of "accius", though CLTK lemmatizer in general does not lemmatize proper names), but it is connected with the larger issue of identifying sources of lemmata (see below).
 
 ## A list of unexpected lemmatizations
 
-Here are the first results -- lemmatizations of Quint. Inst. 10, letters A-C, which, on the first reading, strike me as unexpected. This may be a *possible* lemma, but not the one that I think of as the *most common* one.
+Here are the first results -- lemmatizations of Quint. Inst. 10, letters A-C, which, on the first reading, strike me as unexpected, contrary to the "more commonly occurring headword" approach. The lemma may be *possible*, but it is not the one that I think of as the *most common* one.
 
 | Form | Lemma |
 |---|---|
@@ -119,9 +119,9 @@ Here are the first results -- lemmatizations of Quint. Inst. 10, letters A-C, wh
 
 # Unclear lemma format
 
-A number of lemmata ends with an index number (accido1, adeo1, assiduus2...). Because it is not clearly documented which words / meanings are signified by these indices, they are not very useful: does "adeo" signify "so", or "to approach"? Where can I check?
+A number of lemmata ends with an index number (accido1, adeo1, assiduus2, etc). Because it is not clearly documented which words / meanings are signified by these indices, they are not very useful: does "adeo1" signify "so", or "to approach"? Where can I check?
 
-In general, the *source* of lemmata should somehow be provided. See below.
+In general, the *source* of lemmata should somehow be given, documented, or cited, to enhance scholarly reliability of the tool. See below.
 
 # Inconsistent lemma format
 
@@ -158,14 +158,18 @@ In lemmatization, the default CLTK lemmatizer provides verbs with prefixes which
 
 A couple of lemmatizations seem to me not only unexpected, but wholly improbable:
 
+| Form | Lemma |
+|---|---|
 | acie | acieris |
 | bene |benus |
 
 
 # Unrecognized forms
 
-I would expect a number of forms to be lemmatized, but seem not to be:
+I would expect a number of forms to be lemmatized, but they haven't been:
 
+| Form | Lemma |
+|---|---|
 | caelibum | caelibum |
 | codicibus | codicibus |
 | cogitaverant | cogitaverant |
@@ -173,3 +177,4 @@ I would expect a number of forms to be lemmatized, but seem not to be:
 | coturnos | coturnos |
 
 # Some general observations
+
